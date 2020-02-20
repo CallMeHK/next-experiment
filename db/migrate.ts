@@ -6,14 +6,20 @@ const sequelize = new Sequelize('postgres://hzjqicog:gUt4lf5kPFYZrXQLiS-2lK4xU4I
 sequelizeInitUser(sequelize)
 
 const migrate = async () => {
+    const rand = Math.floor(Math.random() * 100000000)
     await sequelize.sync()
     const newUser = await User.create({
-        username: 'ty',
-        password:'123',
-        email: 'ty@ty.com'
+        username: 'ty+' + rand,
+        password: '123',
+        email: 'ty+' + rand + '@ty.com'
     })
 
-    console.log(newUser)
+    console.log('created:', newUser.id, newUser.username)
+
+    const findUser = await User.findByPk(1)
+    if (findUser !== null) {
+        console.log('found:', findUser.id, findUser.username)
+    }
 }
 
 migrate()
